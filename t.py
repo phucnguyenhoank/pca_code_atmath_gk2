@@ -6,7 +6,7 @@ np.random.seed(42)
 mean = [3, 4]
 cov = [[2, 3], 
        [3, 5]]  # Covariance matrix for correlated features
-X = np.random.multivariate_normal(mean, cov, 200).T  # Shape: (2, n_samples)
+X = np.random.multivariate_normal(mean, cov, 100).T  # Shape: (2, n_samples)
 
 # Step 1: Standardize the data (zero mean, unit variance)
 X_mean = np.mean(X, axis=1, keepdims=True)  # Mean of each feature, shape: (2,1)
