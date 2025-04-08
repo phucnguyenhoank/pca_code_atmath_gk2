@@ -34,7 +34,7 @@ W = eigenvectors[:, :k]  # Projection matrix, shape: (2, 1)
 lambda_coordinates = W.T @ X_normalized  # Dữ liệu 1D, shape: (1, n_samples)
 
 # Tính phép chiếu ngược (projection onto PC) trong không gian normalized:
-X_projections = (W @ W.T) @ X_normalized  # Dữ liệu đã chiếu, ở dạng normalized
+X_projections = W @ lambda_coordinates # W.T) @ X_normalized  # Dữ liệu đã chiếu, ở dạng normalized
 
 # --- Visualization ---
 plt.figure(figsize=(8, 6))
