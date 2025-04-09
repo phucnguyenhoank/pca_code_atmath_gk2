@@ -14,7 +14,7 @@ X_std = np.std(X, axis=1, keepdims=True)     # Std of each feature, shape: (2,1)
 X_normalized = (X - X_mean) / X_std            # Standardized data
 
 # Step 2: Compute covariance matrix (sample covariance with n-1)
-cov_matrix = X_normalized @ X_normalized.T / (X.shape[1] - 1)  # Shape: (2,2)
+cov_matrix = X_normalized @ X_normalized.T / (X.shape[1])  # Shape: (2,2)
 
 # Step 3: Compute eigenvalues and eigenvectors (for symmetric matrices)
 eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)

@@ -14,7 +14,7 @@ X_std  = np.std(X, axis=1, keepdims=True)     # shape: (2,1)
 X_normalized = (X - X_mean) / X_std            # Dữ liệu chuẩn hóa
 
 # --- Bước 2: Tính ma trận hiệp phương sai trên dữ liệu chuẩn hóa ---
-cov_matrix = X_normalized @ X_normalized.T / (X.shape[1] - 1)  # shape: (2,2)
+cov_matrix = X_normalized @ X_normalized.T / (X.shape[1])  # shape: (2,2)
 
 # --- Bước 3: Tính eigenvalues và eigenvectors ---
 eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)

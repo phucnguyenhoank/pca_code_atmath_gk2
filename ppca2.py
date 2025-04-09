@@ -95,7 +95,7 @@ def generate_ppca_samples(num_samples=5, add_noise=False):
     return generated
 
 # Sinh một số mẫu mới (ở đây chọn add_noise=False)
-new_samples = generate_ppca_samples(num_samples=8, add_noise=False)
+new_samples = generate_ppca_samples(num_samples=8, add_noise=True)
 
 # ---------------------------
 # Bước 6: Hiển thị các ảnh sinh ra (reshape về 28x28)

@@ -20,7 +20,7 @@ X_std  = np.std(X, axis=1, keepdims=True)    # shape: (n_dim, 1)
 X_normalized = (X - X_mean) / X_std           # Dữ liệu chuẩn hóa: trung bình 0 và std 1 cho mỗi chiều
 
 # --- Bước 2: Tính ma trận hiệp phương sai ---
-cov_matrix = X_normalized @ X_normalized.T / (n_samples - 1)  # shape: (n_dim, n_dim)
+cov_matrix = X_normalized @ X_normalized.T / (n_samples)  # shape: (n_dim, n_dim)
 
 # --- Bước 3: Tính giá trị riêng và vector riêng ---
 eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
