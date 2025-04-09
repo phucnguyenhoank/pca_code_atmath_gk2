@@ -1,27 +1,24 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import torch
-from torchvision import datasets, transforms
+from sklearn.datasets import fetch_openml
 
 # ---------------------------
 # Bước 1: Tải và lọc dữ liệu MNIST cho số 8
 # ---------------------------
-# Định nghĩa transform để chuyển ảnh thành tensor
-transform = transforms.Compose([
-    transforms.ToTensor(),  # Chuyển về tensor với giá trị trong [0, 1]
-])
 
-# Tải tập dữ liệu MNIST (ví dụ sử dụng test dataset)
-mnist_data = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+print("Loading MNIST dataset...")
+mnist_data = fetch_openml('mnist_784', version=1)
 
 # Lọc lấy các ảnh có nhãn "8". Lấy một số mẫu nhất định (ở đây num_samples = 1000)
 images = []
 num_samples = 1000  
 count = 0
-for img, label in mnist_data:
-    if label == 8:
-        # Chuyển tensor sang numpy, loại bỏ kích thước dư và flatten ảnh (28x28 -> vector 784)
-        img_np = img.numpy().squeeze().flatten()
+
+# Lặp qua từng mẫu bằng cách dùng zip: lấy giá trị từ DataFrame/Series
+for img, label in zip(mnist_data.data.values, mnist_data.target.values):
+    if label == "8":  # So sánh với chuỗi "8"
+        # img đã là numpy array, chỉ cần flatten (nếu chưa flat)
+        img_np = img.flatten()  
         images.append(img_np)
         count += 1
         if count >= num_samples:

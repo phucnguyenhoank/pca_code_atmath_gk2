@@ -24,7 +24,6 @@ cov_matrix = X_normalized @ X_normalized.T / (n_samples)  # shape: (n_dim, n_dim
 
 # --- Bước 3: Tính giá trị riêng và vector riêng ---
 eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
-# eigenvalues của ma trận đối xứng được sắp theo thứ tự tăng dần nên ta đảo ngược:
 sorted_idx = np.argsort(eigenvalues)[::-1]
 eigenvalues = eigenvalues[sorted_idx]
 eigenvectors = eigenvectors[:, sorted_idx]
@@ -54,10 +53,8 @@ origin = np.array([0, 0])
 pc1 = np.array([1, 0])  # trục thứ nhất
 pc2 = np.array([0, 1])  # trục thứ hai
 
-plt.quiver(origin[0], origin[1], pc1[0], pc1[1], color='red',
-           scale_units='xy', scale=3, label='PC1')
-plt.quiver(origin[0], origin[1], pc2[0], pc2[1], color='green',
-           scale_units='xy', scale=3, label='PC2')
+plt.quiver(origin[0], origin[1], pc1[0], pc1[1], color='red', scale_units='xy', scale=3, label='PC1')
+plt.quiver(origin[0], origin[1], pc2[0], pc2[1], color='green',scale_units='xy', scale=3, label='PC2')
 
 plt.xlabel("PC1")
 plt.ylabel("PC2")
