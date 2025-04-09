@@ -2,11 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # --- Sinh dữ liệu 2D ---
-np.random.seed(42)
+# np.random.seed(42)
+n_samples = 100
 mean = [3, 4]
 cov = [[2, 3], 
        [3, 5]]  # Ma trận hiệp phương sai cho các biến có liên quan
-X = np.random.multivariate_normal(mean, cov, 100).T  # Shape: (2, n_samples)
+X = np.random.multivariate_normal(mean, cov, n_samples).T  # Shape: (2, n_samples)
 
 # --- Bước 1: Chuẩn hóa dữ liệu ---
 X_mean = np.mean(X, axis=1, keepdims=True)  # shape: (2,1)
@@ -63,14 +64,11 @@ plt.scatter(X_proj_orig[0, :], X_proj_orig[1, :], alpha=0.7, label='Projected Da
 # Vẽ vector PC trong không gian gốc tại trung điểm dữ liệu (mu)
 origin = X_mean.flatten()
 scale_factor = 3  # hệ số scale để hiển thị vector PC rõ ràng hơn
-plt.quiver(origin[0], origin[1],
-           v_unit[0]*scale_factor, v_unit[1]*scale_factor,
-           angles='xy', scale_units='xy', scale=1,
-           color='red', width=0.005, label='PC1')
+plt.quiver(origin[0], origin[1], v_unit[0]*scale_factor, v_unit[1]*scale_factor, angles='xy', scale_units='xy', scale=1, color='red', width=0.005, label='PC1')
 
 # Vẽ các đường nối vuông góc từ mỗi điểm dữ liệu đến hình chiếu của nó
-n_points_show = 20
-indices = np.linspace(0, X.shape[1]-1, n_points_show).astype(int)
+n_points_show = n_samples // 2
+indices = np.linspace(0, X.shape[1], n_points_show, endpoint=False, dtype=int)
 for i in indices:
     x_orig = X[:, i]
     x_proj = X_proj_orig[:, i]
