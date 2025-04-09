@@ -31,6 +31,13 @@ print("Shape của tập dữ liệu thực:", images.shape)  # (784, 1000)
 D = images.shape[0]   # Số chiều mỗi mẫu (784)
 N = images.shape[1]   # Số mẫu
 
+# Hiển thị một số ảnh gốc
+fig, axes = plt.subplots(3, 8, figsize=(16, 6))  # 3 hàng: ảnh sạch và ảnh nhiễu
+for i in range(8):
+    ori_img = images[:, i].reshape(28, 28)  # Reshape về kích thước 28x28
+    axes[0, i].imshow(ori_img, cmap='gray')
+    axes[0, i].axis('off')
+
 # ---------------------------
 # Bước 2: Tính trung bình và ma trận hiệp phương sai
 # ---------------------------
@@ -40,7 +47,7 @@ mu = np.mean(images, axis=1).reshape(D, 1)  # (784,1)
 # Trung tâm hóa dữ liệu: trừ đi vector mu (mỗi cột)
 X_centered = images - mu  
 # Với dữ liệu dạng (784, N) và mỗi hàng là 1 biến, ta dùng np.cov (rowvar=True là mặc định)
-cov = np.cov(X_centered)
+cov = X_centered @ X_centered.T / N  # Ma trận hiệp phương sai
 # cov có kích thước (784, 784)
 
 # ---------------------------
@@ -92,17 +99,33 @@ def generate_ppca_samples(num_samples=5, add_noise=False):
     return generated
 
 # Sinh một số mẫu mới (ở đây chọn add_noise=False)
-new_samples = generate_ppca_samples(num_samples=8, add_noise=True)
+samples_clean = generate_ppca_samples(num_samples=8, add_noise=False)
+samples_noisy = generate_ppca_samples(num_samples=8, add_noise=True)
 
 # ---------------------------
 # Bước 6: Hiển thị các ảnh sinh ra (reshape về 28x28)
 # ---------------------------
-fig, axes = plt.subplots(1, 8, figsize=(16, 2))
-for i in range(new_samples.shape[1]):  # Duyệt qua các cột, mỗi cột là một mẫu
-    img_vec = new_samples[:, i]
-    # Reshape từ vector (784,) thành ảnh 28x28
-    img = img_vec.reshape(28, 28)
-    axes[i].imshow(img, cmap='gray')
-    axes[i].axis('off')
-plt.suptitle("Các ảnh '8' mới được sinh ra từ PPCA (samples theo cột)")
+for i in range(samples_clean.shape[1]):  # Duyệt qua các cột, mỗi cột là một mẫu
+    # Ảnh sạch (hàng trên)
+    img_clean = samples_clean[:, i].reshape(28, 28)
+    axes[1, i].imshow(img_clean, cmap='gray')
+    axes[1, i].axis('off')
+
+    # Ảnh nhiễu (hàng dưới)
+    img_noisy = samples_noisy[:, i].reshape(28, 28)
+    axes[2, i].imshow(img_noisy, cmap='gray')
+    axes[2, i].axis('off')
+
+# Tiêu đề cho từng hàng
+# Điều chỉnh khoảng cách giữa các subplot và figure
+plt.subplots_adjust(top=0.88, hspace=0.3)
+
+# Tiêu đề cho từng hàng (tính theo tỷ lệ chiều cao figure)
+fig.text(0.5, 0.89, "Gốc", ha='center', fontsize=12)
+fig.text(0.5, 0.62, "Sạch", ha='center', fontsize=12)
+fig.text(0.5, 0.33, "Có nhiễu", ha='center', fontsize=12)
+
+# Tiêu đề toàn bộ
+plt.suptitle("So sánh ảnh sinh ra từ PPCA: Gốc không nhiễu vs. có nhiễu", fontsize=14)
+
 plt.show()

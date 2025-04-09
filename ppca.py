@@ -34,6 +34,15 @@ print("Shape của tập dữ liệu thực:", real_images.shape)  # Sẽ in (4,
 D = real_images.shape[0]     # Số chiều của mỗi mẫu (4)
 N = real_images.shape[1]     # Số mẫu (1000)
 
+# Hiển thị một số ảnh gốc
+fig, axes = plt.subplots(2, 8, figsize=(16, 4))
+for i in range(8):
+    img_vec = real_images[:, i]
+    # Chuyển vector (độ dài 4) thành ma trận 2x2
+    img = img_vec.reshape(2, 2)
+    axes[0, i].imshow(img, cmap='gray', interpolation='nearest')
+    axes[0, i].axis('off')
+
 # --- Bước 2: Tính trung bình (μ) của dữ liệu ---
 # Với dữ liệu theo cột, trung bình tính theo các cột -> axis=1 cho mỗi biến.
 mu = np.mean(real_images, axis=1)      # shape: (4,)
@@ -43,7 +52,7 @@ mu = mu.reshape(D, 1)
 # --- Bước 3: Tính ma trận hiệp phương sai (sau khi trừ trung bình) ---
 X_centered = real_images - mu          # mỗi cột trừ đi vector trung bình
 # Vì mỗi hàng là một biến và mỗi cột là một mẫu, np.cov với rowvar=True (mặc định) là phù hợp.
-cov = np.cov(X_centered)
+cov = X_centered @ X_centered.T / N  # Ma trận hiệp phương sai
 # Kích thước cov: (4, 4)
 
 # --- Bước 4: Phân rã giá trị riêng của ma trận hiệp phương sai ---
@@ -93,12 +102,16 @@ def generate_ppca_samples(num_samples=5, add_noise=False):
 new_samples = generate_ppca_samples(num_samples=8, add_noise=True)
 
 # --- Bước 7: Hiển thị các mẫu ảnh 2x2 được sinh ra ---
-fig, axes = plt.subplots(1, 8, figsize=(16, 2))
+
 for i in range(new_samples.shape[1]):  # Duyệt theo cột (mỗi cột là một mẫu)
     img_vec = new_samples[:, i]
     # Chuyển vector (độ dài 4) thành ma trận 2x2
     img = img_vec.reshape(2, 2)
-    axes[i].imshow(img, cmap='gray', interpolation='nearest')
-    axes[i].axis('off')
+    axes[1, i].imshow(img, cmap='gray', interpolation='nearest')
+    axes[1, i].axis('off')
+
+# Thêm tiêu đề cho từng hàng bằng fig.text
+fig.text(0.04, 0.72, "Gốc", va='center', ha='center', rotation='vertical', fontsize=12)
+fig.text(0.04, 0.28, "Có nhiễu", va='center', ha='center', rotation='vertical', fontsize=12)
 plt.suptitle("Các mẫu ảnh mới được sinh ra từ PPCA (samples theo cột)")
 plt.show()
