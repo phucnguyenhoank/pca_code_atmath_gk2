@@ -11,7 +11,7 @@ mnist_data = fetch_openml('mnist_784', version=1)
 
 # Lọc lấy các ảnh có nhãn "8". Lấy một số mẫu nhất định (ở đây num_samples = 1000)
 images = []
-num_samples = 1000  
+num_samples = 3000  
 count = 0
 
 # Lặp qua từng mẫu bằng cách dùng zip: lấy giá trị từ DataFrame/Series
@@ -45,8 +45,7 @@ for i in range(8):
 mu = np.mean(images, axis=1).reshape(D, 1)  # (784,1)
 
 # Trung tâm hóa dữ liệu: trừ đi vector mu (mỗi cột)
-X_centered = images - mu  
-# Với dữ liệu dạng (784, N) và mỗi hàng là 1 biến, ta dùng np.cov (rowvar=True là mặc định)
+X_centered = images - mu 
 cov = X_centered @ X_centered.T / N  # Ma trận hiệp phương sai
 # cov có kích thước (784, 784)
 
